@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using FixMath.NET;
+using UnityEngine;
 using Unity.Mathematics.FixedPoint;
-using Utils;
+using SepM.Physics;
+using SepM.Utils;
 
 public class PhysWorld{
 	private List<PhysObject> m_objects = new List<PhysObject>();
@@ -11,9 +12,9 @@ public class PhysWorld{
  
     public void AddObject (PhysObject obj) {
         GameObject u_obj;
-        if(obj.coll is SphereCollider){
+        if(obj.coll is SepM.Physics.SphereCollider){
             u_obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            float sphRadius = (float)((SphereCollider)obj.coll).Radius;
+            float sphRadius = (float)((SepM.Physics.SphereCollider)obj.coll).Radius;
             u_obj.transform.localScale = Vector3.one*sphRadius;
         }
         else{

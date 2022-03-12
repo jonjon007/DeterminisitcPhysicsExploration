@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics.FixedPoint;
-using Utils;
+using SepM.Utils;
+using SepM.Physics;
 
-namespace algor{
+namespace SepM.Physics{
     public static class algo{
         public static CollisionPoints FindSphereSphereCollisionPoints(
             SphereCollider a, PhysTransform ta,

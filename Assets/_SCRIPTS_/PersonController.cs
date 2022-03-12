@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FixMath.NET;
 using Unity.Mathematics.FixedPoint;
+using SepM.Physics;
 
 public class PersonController : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class PersonController : MonoBehaviour
         // physWorld.AddObject(newObj);
 
         PhysObject newObj2 = new PhysObject(new fp3(0,0,10));
-        newObj2.coll = new SphereCollider(2);
+        newObj2.coll = new SepM.Physics.SphereCollider(2);
         physWorld.AddObject(newObj2);
 
         PhysObject newObj3 = new PhysObject(new fp3(0,2.1m,10));

@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
 using System;
 
-namespace Utils{
+namespace SepM.Utils{
     public static class Utilities
     {
         public static fp3 cross(this fp3 va, fp3 vb){

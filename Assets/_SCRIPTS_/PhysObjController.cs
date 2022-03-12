@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics.FixedPoint;
+using SepM.Physics;
 
 public class PhysObjController : MonoBehaviour
 {
