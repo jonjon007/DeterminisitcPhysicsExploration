@@ -6,15 +6,6 @@ using Utils;
 
 namespace algor{
     public static class algo{
-        // public CollisionPoints FindSphereSphereCollisionPoints(
-        // 	SphereCollider a, PhysTransform ta,
-        // 	SphereCollider b, PhysTransform tb);
-    
-    
-        // CollisionPoints FindSpherePlaneCollisionPoints(
-        // 	SphereCollider a, PhysTransform ta,
-        // 	PlaneCollider b, PhysTransform tb);
-
         public static CollisionPoints FindSphereSphereCollisionPoints(
             SphereCollider a, PhysTransform ta,
             SphereCollider b, PhysTransform tb)
@@ -51,12 +42,10 @@ namespace algor{
                 HasCollision = true
             };
         }
-    }
-}
-/*
-        // Transforms dont work for plane
 
-        public static CollisionPoints FindSpherePlaneMaifoldPoints(
+        // Transforms dont work for plane
+        // TODO: Assumes plane is infinite; add bounds calculations
+        public static CollisionPoints FindSpherePlaneCollisionPoints(
             SphereCollider a, PhysTransform ta,
             PlaneCollider  b, PhysTransform tb)
         {
@@ -64,19 +53,20 @@ namespace algor{
             fp Ar = a.Radius * ta.WorldScale().major();
 
             // TODO: Continue here
-            fp3 N = b.Plane.P * tb.WorldRotation();
+            fp3 N = b.Normal.multiply(tb.WorldRotation());
             N.normalize();
             
-            fp3 P = N * b.Plane.D + tb.WorldPosition();
+            fp3 P = N * b.Distance + tb.WorldPosition();
 
             fp d = (A - P).dot(N); // distance from center of sphere to plane surface
 
             if (d > Ar) {
-                return {
-                    0, 0,
-                    0,
-                    0,
-                    false
+                return new CollisionPoints{ 
+                    A = fp3.zero,
+                    B = fp3.zero, 
+                    Normal = fp3.zero, 
+                    DepthSqrd = 0,
+                    HasCollision = false
                 };
             }
             
@@ -85,14 +75,17 @@ namespace algor{
 
             fp3 AtoB = B - A;
 
-            return {
-                A, B,
-                AtoB.normalized(),
-                AtoB.length(),
-                true
+            return new CollisionPoints{ 
+                A = A,
+                B = B, 
+                Normal = AtoB.normalized(), 
+                DepthSqrd = AtoB.lengthSqrd(),
+                HasCollision = true
             };
         }
-
+    }
+}
+/*
         ManifoldPoints FindSphereCapsuleMaifoldPoints(
             SphereCollider*  a, PhysTransform* ta,
             CapsuleCollider* b, PhysTransform* tb)

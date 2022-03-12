@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
 using algor;
+using Utils;
 
 public struct CollisionPoints {
 	public fp3 A; // Furthest point of A into B
@@ -14,7 +16,7 @@ public struct CollisionPoints {
 public class PhysTransform { // Describes an objects location
 	public fp3 Position;
 	public fp3 Scale;
-	public Unity.Mathematics.quaternion Rotation;
+	public quaternion Rotation;
     private PhysTransform m_parent;
     private List<Transform> m_children;
     private PhysTransform t_parent;
@@ -27,6 +29,17 @@ public class PhysTransform { // Describes an objects location
 		}
 
 		return Position + parentPos;
+	}
+    public quaternion WorldRotation(){
+		
+        // TODO: Check if we shoudl be using (1,0,0,0) or (0,0,0,1)
+        quaternion parentRot = quaternion.identity;
+
+		if (!(m_parent is null)) {
+			parentRot = m_parent.WorldRotation();
+		}
+
+		return Rotation.multiply(parentRot);
 	}
     /* TODO: Comment */
     public fp3 WorldScale(){
@@ -87,19 +100,21 @@ public class SphereCollider : Collider{
 		PhysTransform transform,
 		PlaneCollider plane,
 		PhysTransform planeTransform){
-        // return algo.FindSpherePlaneCollisionPoints(
-		// 	this, transform, plane, planeTransform
-        // );
-
-		// TODO
-        return new CollisionPoints();
+        return algo.FindSpherePlaneCollisionPoints(
+			this, transform, plane, planeTransform
+        );
 	}
 };
 
 public class PlaneCollider : Collider{
-	public fp3 Center;
-	public fp Radius;
+	public fp3 Normal;
+	public fp Distance;
  
+    public PlaneCollider(fp3 n, fp d){
+        Normal = n;
+        Distance = d;
+    }
+
 	public override CollisionPoints TestCollision(
 		PhysTransform transform,
 		Collider collider,
@@ -113,10 +128,8 @@ public class PlaneCollider : Collider{
 		SphereCollider sphere,
 		PhysTransform sphereTransform)
 	{
-		// return algo.FindSpherePlaneCollisionPoints(
-		// 	this, transform, sphere, sphereTransform);
-        // TODO
-        return new CollisionPoints();
+		return algo.FindSpherePlaneCollisionPoints(
+			sphere, transform, this, sphereTransform);
 	}
  
 	public override CollisionPoints TestCollision(

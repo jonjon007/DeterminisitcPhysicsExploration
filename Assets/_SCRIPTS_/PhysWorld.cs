@@ -3,15 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using FixMath.NET;
 using Unity.Mathematics.FixedPoint;
+using Utils;
 
 public class PhysWorld{
 	private List<PhysObject> m_objects = new List<PhysObject>();
 	fp3 m_gravity = new fp3(0, -9.81m, 0);
  
     public void AddObject (PhysObject obj) {
-        GameObject u_obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        float sphRadius = (float)((SphereCollider)obj.coll).Radius;
-        u_obj.transform.localScale = Vector3.one*sphRadius;
+        GameObject u_obj;
+        if(obj.coll is SphereCollider){
+            u_obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            float sphRadius = (float)((SphereCollider)obj.coll).Radius;
+            u_obj.transform.localScale = Vector3.one*sphRadius;
+        }
+        else{
+            u_obj = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            PlaneCollider c = (PlaneCollider)obj.coll;
+            Vector3 planeDir = c.Normal.toVector3();
+            float scale = (float)c.Distance/10;
+            u_obj.transform.Rotate(planeDir);
+            u_obj.transform.localScale = Vector3.one*scale;
+        }
         PhysObjController u_objCont = u_obj.AddComponent<PhysObjController>();
         u_objCont.setPhysObject(obj);
         
