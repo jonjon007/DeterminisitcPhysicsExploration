@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FixMath.NET;
 using Unity.Mathematics.FixedPoint;
 using SepM.Physics;
 
