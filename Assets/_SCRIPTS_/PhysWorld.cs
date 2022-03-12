@@ -10,6 +10,8 @@ public class PhysWorld{
  
     public void AddObject (PhysObject obj) {
         GameObject u_obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        float sphRadius = (float)((SphereCollider)obj.coll).Radius;
+        u_obj.transform.localScale = Vector3.one*sphRadius;
         PhysObjController u_objCont = u_obj.AddComponent<PhysObjController>();
         u_objCont.setPhysObject(obj);
         
@@ -23,17 +25,16 @@ public class PhysWorld{
             fp mass = obj.Mass;
             fp3 oldForce = obj.Force;
             fp3 oldVelocity = obj.Velocity;
-            fp3 oldPosition = obj.Position;
+            fp3 oldPosition = obj.Transform.Position;
 
             // Get combined forces
             fp3 newForce =  oldForce + mass * m_gravity; // apply a force
             fp3 newVelocity = oldVelocity + newForce / mass * dt;
             fp3 newPosition = oldPosition + newVelocity*dt;
 			 
-            obj.SetVelocity(newVelocity);
-            obj.SetPosition(newPosition);
-			obj.SetForce(fp3.zero); // reset net force at the end
-            Debug.Log(obj.Position);
+            obj.Velocity = (newVelocity);
+            obj.Transform.Position = (newPosition);
+			obj.Force = (fp3.zero); // reset net force at the end
 		}
 	}
 }

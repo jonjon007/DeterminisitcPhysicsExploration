@@ -16,8 +16,18 @@ public class PersonController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         physWorld = new PhysWorld();
-        PhysObject newObj = new PhysObject(5);
+
+        PhysObject newObj = new PhysObject(new fp3(0,0,10));
+        newObj.coll = new SphereCollider(5);
         physWorld.AddObject(newObj);
+
+        PhysObject newObj2 = new PhysObject(new fp3(0,0,10));
+        newObj2.coll = new SphereCollider(2);
+        physWorld.AddObject(newObj2);
+
+        CollisionPoints collData = newObj2.coll.TestCollision(newObj2.Transform, newObj.coll, newObj.Transform);
+        bool isTouching = collData.HasCollision;
+        Debug.Log(isTouching);
     }
 
     // Update is called once per frame
