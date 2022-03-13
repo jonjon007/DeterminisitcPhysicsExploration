@@ -23,14 +23,6 @@ namespace SepM.Utils{
             fp minVal = x*(1-errorPercent*sign);
             return other >= minVal && other <= maxVal;
         }
-
-        public static fp InvSqrft(this fp x){
-            (fp, int) tmp = (0,0);
-            tmp.Item1 = x;
-            tmp.Item2 = 0x5f3759df - (tmp.Item2 >> 1);
-            fp y = tmp.Item1;
-            return y * (1.5m - 0.5m * x * y * y);
-        }
         
         /* Returns the vector length squared, avoiding the slow operation */
         public static fp lengthSqrd(this fp3 vec){
@@ -55,7 +47,7 @@ namespace SepM.Utils{
         public static fp3 normalized(this fp3 vec){
             fp lengthSqrd = vec.lengthSqrd();
 
-            fp3 result = vec/lengthSqrd.Sqrt();
+            fp3 result = vec/lengthSqrd.sqrt();
 
             return result;
         }
@@ -82,10 +74,6 @@ namespace SepM.Utils{
             return x*x;
         }
 
-        /* Squares the passed FixedPoint vector */
-        public static fp3 sqrd(this fp3 v){
-            return new fp3(v.x.sqrd(), v.y.sqrd(), v.z.sqrd());
-        }
         public static Vector3 toVector3(this fp3 v){
             Vector3 result = new Vector3(
                 (float)v.x,
@@ -96,8 +84,9 @@ namespace SepM.Utils{
         }
 
         // Referenced from: https://github.com/asik/FixedMath.Net/blob/b2adac7713eda01fdd31578dd5a1d15f8f7ba067/src/Fix64.cs#L575-L645
-        public static fp Sqrt(this fp x)
+        public static fp sqrt(this fp x)
         {
+            int NUM_BITS = 64;
             var xl = x.RawValue;
             if (xl < 0)
             {
@@ -110,8 +99,7 @@ namespace SepM.Utils{
             var result = 0UL;
 
             // second-to-top bit
-            // var bit = 1UL << (NUM_BITS - 2);
-            var bit = 1UL << (64 - 2);
+            var bit = 1UL << (NUM_BITS - 2);
 
             while (bit > num)
             {
@@ -140,8 +128,7 @@ namespace SepM.Utils{
                 if (i == 0)
                 {
                     // Then process it again to get the lowest 16 bits.
-                    // if (num > (1UL << (NUM_BITS / 2)) - 1)
-                    if (num > (1UL << (64 / 2)) - 1)
+                    if (num > (1UL << (NUM_BITS / 2)) - 1)
                     {
                         // The remainder 'num' is too large to be shifted left
                         // by 32, so we have to add 1 to result manually and
@@ -150,21 +137,16 @@ namespace SepM.Utils{
                         //       = num + result^2 - (result + 0.5)^2
                         //       = num - result - 0.5
                         num -= result;
-                        num = (num << (64 / 2)) - 0x80000000UL;
-                        // num = (num << (NUM_BITS / 2)) - 0x80000000UL;
-                        result = (result << (64 / 2)) + 0x80000000UL;
-                        // result = (result << (NUM_BITS / 2)) + 0x80000000UL;
+                        num = (num << (NUM_BITS / 2)) - 0x80000000UL;
+                        result = (result << (NUM_BITS / 2)) + 0x80000000UL;
                     }
                     else
                     {
-                        // num <<= (NUM_BITS / 2);
-                        num <<= (64 / 2);
-                        // result <<= (NUM_BITS / 2);
-                        result <<= (64 / 2);
+                        num <<= (NUM_BITS / 2);
+                        result <<= (NUM_BITS / 2);
                     }
 
-                    // bit = 1UL << (NUM_BITS / 2 - 2);
-                    bit = 1UL << (64 / 2 - 2);
+                    bit = 1UL << (NUM_BITS / 2 - 2);
                 }
             }
             // Finally, if next bit would have been 1, round the result upwards.
