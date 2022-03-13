@@ -12,6 +12,39 @@ using SepM.Math;
 public class UtilitiesTests
 {
     [Test]
+    public void TestClampMin(){
+        fp min = -1;
+        fp max = 1;
+        fp val = -2;
+        fp expected = -1;
+        
+        fp actual = val.clamp(min, max);
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public void TestClampMax(){
+        fp min = -1;
+        fp max = 1;
+        fp val = 2;
+        fp expected = 1;
+        
+        fp actual = val.clamp(min, max);
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public void TestClampInBetween(){
+        fp min = -1;
+        fp max = 1;
+        fp val = .5m;
+        fp expected = .5m;
+        
+        fp actual = val.clamp(min, max);
+        Assert.AreEqual(expected, actual);
+    }
+    
+    [Test]
     public void TestCross(){
         fp3 v1 = new fp3(1,0,0);
         fp3 v2 = new fp3(0,1,0);
@@ -68,7 +101,37 @@ public class UtilitiesTests
     }
 
     [Test]
-    public void TestMajorNormal(){
+    public void TestMajor2Normal(){
+        // Normal condition
+        fp2 yMajor = new fp2(3,11);
+        fp expected = 11;
+
+        fp actual = yMajor.major();
+        Assert.That(expected == actual, "Incorrect major calculation");
+    }
+
+    [Test]
+    public void TestMajor2Tie(){
+        // Tie
+        fp2 tieMajor = new fp2(5,5);
+        fp expected = 5;
+
+        fp actual = tieMajor.major();
+        Assert.AreEqual(expected, actual, "Incorrect major calculation");
+    }
+
+    [Test]
+    public void TestMajor2Zero(){
+        // Tie
+        fp2 zeroMajor = new fp2(0,0);
+        fp expected = 0;
+
+        fp actual = zeroMajor.major();
+        Assert.AreEqual(expected, actual, "Incorrect major calculation");
+    }
+    
+    [Test]
+    public void TestMajor3Normal(){
         // Normal condition
         fp3 yMajor = new fp3(3,11,.5m);
         fp expected = 11;
@@ -78,7 +141,7 @@ public class UtilitiesTests
     }
 
     [Test]
-    public void TestMajorTie(){
+    public void TestMajor3Tie(){
         // Tie
         fp3 tieMajor = new fp3(0,5,5);
         fp expected = 5;
@@ -88,7 +151,7 @@ public class UtilitiesTests
     }
 
     [Test]
-    public void TestMajorZero(){
+    public void TestMajor3Zero(){
         // Tie
         fp3 zeroMajor = new fp3(0,0,0);
         fp expected = 0;

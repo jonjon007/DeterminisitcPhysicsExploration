@@ -11,6 +11,13 @@ namespace SepM.Physics{
         public fp3 Normal; // B – A normalized
         public fp DepthSqrd;    // Length of B – A
         public bool HasCollision;
+        public static CollisionPoints noCollision = new CollisionPoints{ 
+            A = fp3.zero,
+            B = fp3.zero, 
+            Normal = fp3.zero, 
+            DepthSqrd = 0,
+            HasCollision = false
+        };
     };
     
     public class PhysTransform { // Describes an objects location
@@ -30,9 +37,7 @@ namespace SepM.Physics{
 
             return Position + parentPos;
         }
-        public fpq WorldRotation(){
-            
-            // TODO: Check if we shoudl be using (1,0,0,0) or (0,0,0,1)
+        public fpq WorldRotation(){            
             fpq parentRot = fpq.identity;
 
             if (!(m_parent is null)) {
@@ -69,6 +74,12 @@ namespace SepM.Physics{
             PlaneCollider plane,
             PhysTransform planeTransform
         );
+
+        public abstract CollisionPoints TestCollision(
+            PhysTransform transform,
+            CapsuleCollider capsule,
+            PhysTransform capsuleTransform
+        );
     };
 
     public class SphereCollider : Collider{
@@ -104,6 +115,83 @@ namespace SepM.Physics{
                 this, transform, plane, planeTransform
             );
         }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            CapsuleCollider capsule,
+            PhysTransform capsuleTransform){
+            return algo.FindSphereCapsuleCollisionPoints(
+                this, transform, capsule, capsuleTransform
+            );
+        }
+    };
+
+    public class CapsuleCollider : Collider{
+        public fp3 Center;
+        public fp Radius;
+        public fp Height;
+        public fp3 Direction;
+
+        public CapsuleCollider(){
+			Center = fp3.zero;
+			Radius = 0.5m;
+			Height = 2;
+            Direction = new fp3(1,0,0);
+        }
+    
+        public CapsuleCollider(fp3 c, fp r, fp h){
+            Center = c;
+            Radius = r;
+            Height = h;
+            Direction = new fp3(1,0,0);
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            Collider collider,
+            PhysTransform colliderTransform)
+        {
+            return collider.TestCollision(colliderTransform, this, transform);
+        }
+    
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            SphereCollider sphere,
+            PhysTransform sphereTransform)
+        {
+            // TODO: Make a capsule version
+            // return algo.FindSphereCapsuleCollisionPoints(
+            //     sphere, transform, this, sphereTransform);
+
+            // TODO
+            return new CollisionPoints();
+        }
+    
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            PlaneCollider plane,
+            PhysTransform planeTransform){
+            // TODO: Make a capsule version
+            // return algo.FindCapsulePlaneCollisionPoints(
+            //     this, transform, plane, planeTransform
+            // );
+
+            // TODO
+            return new CollisionPoints();
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            CapsuleCollider capsule,
+            PhysTransform capsuleTransform){
+            // TODO: Make a capsule version
+            // return algo.FindCapsuleCapsuleCollisionPoints(
+            //     this, transform, capsule, capsuleTransform
+            // );
+
+            // TODO
+            return new CollisionPoints();
+        }
     };
 
     public class PlaneCollider : Collider{
@@ -138,6 +226,18 @@ namespace SepM.Physics{
             PhysTransform planeTransform){
             // return algo.FindPlanePlaneCollisionPoints(
             // 	this, transform, plane, planeTransform
+            // );
+
+            // TODO
+            return new CollisionPoints();
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            CapsuleCollider capsule,
+            PhysTransform capsuleTransform){
+            // return algo.FindCapsulePlaneCollisionPoints(
+            // 	this, transform, capsule, capsuleTransform
             // );
 
             // TODO

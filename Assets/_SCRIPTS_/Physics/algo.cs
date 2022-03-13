@@ -21,13 +21,7 @@ namespace SepM.Physics{
             fp3 BtoA = A - B;
 
             if (AtoB.lengthSqrd() > (Ar + Br).sqrd()) {
-                return new CollisionPoints{ 
-                    A = fp3.zero,
-                    B = fp3.zero, 
-                    Normal = fp3.zero, 
-                    DepthSqrd = 0,
-                    HasCollision = false
-                };
+                return CollisionPoints.noCollision;
             }
 
             A += AtoB.normalized() * Ar;
@@ -53,7 +47,6 @@ namespace SepM.Physics{
             fp3 A  = a.Center + ta.WorldPosition();
             fp Ar = a.Radius * ta.WorldScale().major();
 
-            // TODO: Continue here
             fp3 N = b.Normal.multiply(tb.WorldRotation());
             N.normalize();
             
@@ -62,13 +55,7 @@ namespace SepM.Physics{
             fp d = (A - P).dot(N); // distance from center of sphere to plane surface
 
             if (d > Ar) {
-                return new CollisionPoints{ 
-                    A = fp3.zero,
-                    B = fp3.zero, 
-                    Normal = fp3.zero, 
-                    DepthSqrd = 0,
-                    HasCollision = false
-                };
+                return CollisionPoints.noCollision;
             }
             
             fp3 B = A - N * d;
@@ -84,33 +71,33 @@ namespace SepM.Physics{
                 HasCollision = true
             };
         }
-    }
-}
-/*
-        ManifoldPoints FindSphereCapsuleMaifoldPoints(
-            SphereCollider*  a, PhysTransform* ta,
-            CapsuleCollider* b, PhysTransform* tb)
+
+        public static CollisionPoints FindSphereCapsuleCollisionPoints(
+        SphereCollider  a, PhysTransform ta,
+        CapsuleCollider b, PhysTransform tb)
         {
-            fp Bhs = 1.0f;
-            fp Brs = 1.0f;
+            fp Bhs = 1.0m;
+            fp Brs = 1.0m;
 
             fp3 s = tb.WorldScale();
-            if (b.Direction == fp3::unit_x) {
+            // TODO: Will need to verify this condition
+            // Right
+            if (b.Direction.Equals(new fp3(1,0,0))) {
                 Bhs = s.x;
-                Brs = vector2(s.y, s.z).major();
+                Brs = new fp2(s.y, s.z).major();
             }
-
-            else if (b.Direction == fp3::unit_y) {
+            // Up
+            else if (b.Direction.Equals(new fp3(0,1,0))) {
                 Bhs = s.y;
-                Brs = vector2(s.x, s.z).major();
+                Brs = new fp2(s.x, s.z).major();
             }
-
-            else if (b.Direction == fp3::unit_z) {
+            // Forward
+            else if (b.Direction.Equals(new fp3(0,0,1))) {
                 Bhs = s.z;
-                Brs = vector2(s.x, s.y).major();
+                Brs = new fp2(s.x, s.y).major();
             }
 
-            fp3 offset = b.Direction * tb.WorldRotation() * (b.Height * Bhs / 2 - b.Radius * Brs);
+            fp3 offset = b.Direction.multiply(tb.WorldRotation()) * (b.Height * Bhs / 2 - b.Radius * Brs);
 
             fp3 A = a.Center          + ta.WorldPosition();
             fp3 B = b.Center - offset + tb.WorldPosition();
@@ -122,19 +109,14 @@ namespace SepM.Physics{
             fp3 BtoA = A - B;
             fp3 BtoC = C - B;
 
-            fp   d = iw::clamp(BtoC.normalized().dot(BtoA), 0.0f, BtoC.length());
+            fp d = BtoC.normalized().dot(BtoA).clamp(0, BtoC.lengthSqrd().sqrt());
             fp3 D = B + BtoC.normalized() * d;
 
             fp3 AtoD = D - A;
             fp3 DtoA = A - D;
 
-            if (AtoD.length() > Ar + Br) {
-                return {
-                    0, 0,
-                    0,
-                    0,
-                    false
-                };
+            if (AtoD.lengthSqrd() > (Ar + Br).sqrd()) {
+                return CollisionPoints.noCollision;
             }
 
             A += AtoD.normalized() * Ar;
@@ -142,14 +124,17 @@ namespace SepM.Physics{
 
             AtoD = D - A;
 
-            return {
-                A, D,
-                AtoD.normalized(),
-                AtoD.length(),
-                true
+            return new CollisionPoints(){
+                A = A,
+                B = D,
+                Normal = AtoD.normalized(),
+                DepthSqrd = AtoD.lengthSqrd(),
+                HasCollision = true
             };
         }
-
+    }
+}
+/*
         // Swaps
 
         void SwapPoints(

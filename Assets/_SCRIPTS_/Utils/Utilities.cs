@@ -6,6 +6,14 @@ using SepM.Math;
 namespace SepM.Utils{
     public static class Utilities
     {
+        // TODO: Move to math library and make a general static function (not extension)
+        public static fp clamp(this fp x, fp min, fp max){
+            if (min > x) return min;
+            if (max < x) return max;
+
+            return x;
+        }
+        
         public static fp3 cross(this fp3 va, fp3 vb){
             return new fp3(
                 va.y * vb.z - va.z * vb.y,
@@ -29,9 +37,15 @@ namespace SepM.Utils{
             return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
         }
 
+        public static fp major(this fp2 vec){
+            fp major = vec.x;
+            if (System.Math.Abs(vec.y) > System.Math.Abs(major)) major = vec.y;
+
+            return major;
+        }
+        
         public static fp major(this fp3 vec){
             fp major = vec.x;
-            // TODO: Ensure this is determinisitc
             if (System.Math.Abs(vec.y) > System.Math.Abs(major)) major = vec.y;
             if (System.Math.Abs(vec.z) > System.Math.Abs(major)) major = vec.z;
 
@@ -54,7 +68,6 @@ namespace SepM.Utils{
         }
 
         public static fp3 multiply(this fp3 v, fpq q){
-            // TODO: Be careful of this cast. It may not be deterministic!
             fp3 u = new fp3((fp)q.x, (fp)q.y, (fp)q.z);
             fp s = (fp)q.w;
 
