@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>3/12/2022 - 7:31:15 PM</Generatedon>
+    <Generatedon>3/13/2022 - 3:44:33 PM</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>10</Classes>
     <Files>7</Files>
-    <Coveredlines>218</Coveredlines>
-    <Uncoveredlines>179</Uncoveredlines>
-    <Coverablelines>397</Coverablelines>
-    <Totallines>909</Totallines>
-    <Linecoverage>54.9</Linecoverage>
+    <Coveredlines>220</Coveredlines>
+    <Uncoveredlines>212</Uncoveredlines>
+    <Coverablelines>432</Coverablelines>
+    <Totallines>912</Totallines>
+    <Linecoverage>50.9</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
-    <Coveredmethods>39</Coveredmethods>
-    <Totalmethods>69</Totalmethods>
-    <Methodcoverage>56.5</Methodcoverage>
+    <Coveredmethods>43</Coveredmethods>
+    <Totalmethods>87</Totalmethods>
+    <Methodcoverage>49.4</Methodcoverage>
   </Summary>
   <Coverage>
     <Assembly name="Gen" classes="3" coverage="2.6" coveredlines="2" coverablelines="75" totallines="132" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="15" methodcoverage="6.6">
@@ -23,18 +23,18 @@
       <Class name="PhysObjController" coverage="0" coveredlines="0" coverablelines="9" totallines="29" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="PhysWorld" coverage="0" coveredlines="0" coverablelines="42" totallines="51" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
     </Assembly>
-    <Assembly name="SepM.Physics" classes="5" coverage="0" coveredlines="0" coverablelines="95" totallines="1106" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="16" methodcoverage="0">
+    <Assembly name="SepM.Physics" classes="5" coverage="0" coveredlines="0" coverablelines="118" totallines="1110" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="30" methodcoverage="0">
       <Class name="SepM.Physics.algo" coverage="0" coveredlines="0" coverablelines="28" totallines="186" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="SepM.Physics.PhysObject" coverage="0" coveredlines="0" coverablelines="20" totallines="230" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
-      <Class name="SepM.Physics.PhysTransform" coverage="0" coveredlines="0" coverablelines="21" totallines="230" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
-      <Class name="SepM.Physics.PlaneCollider" coverage="0" coveredlines="0" coverablelines="13" totallines="230" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="SepM.Physics.SphereCollider" coverage="0" coveredlines="0" coverablelines="13" totallines="230" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
+      <Class name="SepM.Physics.PhysObject" coverage="0" coveredlines="0" coverablelines="22" totallines="231" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
+      <Class name="SepM.Physics.PhysTransform" coverage="0" coveredlines="0" coverablelines="30" totallines="231" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
+      <Class name="SepM.Physics.PlaneCollider" coverage="0" coveredlines="0" coverablelines="19" totallines="231" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
+      <Class name="SepM.Physics.SphereCollider" coverage="0" coveredlines="0" coverablelines="19" totallines="231" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
     </Assembly>
-    <Assembly name="SepM.Utils" classes="1" coverage="89.4" coveredlines="93" coverablelines="104" totallines="160" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="16" totalmethods="16" methodcoverage="100">
-      <Class name="SepM.Utils.Utilities" coverage="89.4" coveredlines="93" coverablelines="104" totallines="160" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="16" totalmethods="16" methodcoverage="100" />
+    <Assembly name="SepM.Utils" classes="1" coverage="81.5" coveredlines="93" coverablelines="114" totallines="161" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="20" totalmethods="20" methodcoverage="100">
+      <Class name="SepM.Utils.Utilities" coverage="81.5" coveredlines="93" coverablelines="114" totallines="161" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="20" totalmethods="20" methodcoverage="100" />
     </Assembly>
-    <Assembly name="Tests" classes="1" coverage="100" coveredlines="123" coverablelines="123" totallines="201" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="22" totalmethods="22" methodcoverage="100">
-      <Class name="UtilitiesTests" coverage="100" coveredlines="123" coverablelines="123" totallines="201" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="22" totalmethods="22" methodcoverage="100" />
+    <Assembly name="Tests" classes="1" coverage="100" coveredlines="125" coverablelines="125" totallines="202" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="22" totalmethods="22" methodcoverage="100">
+      <Class name="UtilitiesTests" coverage="100" coveredlines="125" coverablelines="125" totallines="202" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="22" totalmethods="22" methodcoverage="100" />
     </Assembly>
   </Coverage>
 </CoverageReport>

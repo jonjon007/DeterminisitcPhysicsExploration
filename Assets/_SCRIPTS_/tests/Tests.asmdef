@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "Unity.Mathematics",
         "Unity.Mathematics.FixedPoint",
-        "SepM.Utils"
+        "SepM.Utils",
+        "SepM.Math"
     ],
     "includePlatforms": [
         "Editor"

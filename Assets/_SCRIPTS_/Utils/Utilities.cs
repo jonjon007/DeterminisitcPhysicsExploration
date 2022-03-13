@@ -1,7 +1,7 @@
 using UnityEngine;
-using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
 using System;
+using SepM.Math;
 
 namespace SepM.Utils{
     public static class Utilities
@@ -31,8 +31,9 @@ namespace SepM.Utils{
 
         public static fp major(this fp3 vec){
             fp major = vec.x;
-            if (Math.Abs(vec.y) > Math.Abs(major)) major = vec.y;
-            if (Math.Abs(vec.z) > Math.Abs(major)) major = vec.z;
+            // TODO: Ensure this is determinisitc
+            if (System.Math.Abs(vec.y) > System.Math.Abs(major)) major = vec.y;
+            if (System.Math.Abs(vec.z) > System.Math.Abs(major)) major = vec.z;
 
             return major;
         }
@@ -52,20 +53,20 @@ namespace SepM.Utils{
             return result;
         }
 
-        public static fp3 multiply(this fp3 v, quaternion q){
+        public static fp3 multiply(this fp3 v, fpq q){
             // TODO: Be careful of this cast. It may not be deterministic!
-            fp3 u = new fp3((fp)q.value.x, (fp)q.value.y, (fp)q.value.z);
-            fp s = (fp)q.value.w;
+            fp3 u = new fp3((fp)q.x, (fp)q.y, (fp)q.z);
+            fp s = (fp)q.w;
 
             return v + ((u.cross(v) * s) + u.cross(u.cross(v))) * 2.0m;
         }
 
-        public static quaternion multiply(this quaternion qa, quaternion qb){
-            quaternion result = new quaternion();
-            result.value.w = qa.value.w * qb.value.w - qa.value.x * qb.value.x - qa.value.y * qb.value.y - qa.value.z * qb.value.z;
-            result.value.x = qa.value.w * qb.value.x + qa.value.x * qb.value.w + qa.value.y * qb.value.z - qa.value.z * qb.value.y;
-            result.value.y = qa.value.w * qb.value.y + qa.value.y * qb.value.w + qa.value.z * qb.value.x - qa.value.x * qb.value.z;
-            result.value.z = qa.value.w * qb.value.z + qa.value.z * qb.value.w + qa.value.x * qb.value.y - qa.value.y * qb.value.x;
+        public static fpq multiply(this fpq qa, fpq qb){
+            fpq result = new fpq();
+            result.w = qa.w * qb.w - qa.x * qb.x - qa.y * qb.y - qa.z * qb.z;
+            result.x = qa.w * qb.x + qa.x * qb.w + qa.y * qb.z - qa.z * qb.y;
+            result.y = qa.w * qb.y + qa.y * qb.w + qa.z * qb.x - qa.x * qb.z;
+            result.z = qa.w * qb.z + qa.z * qb.w + qa.x * qb.y - qa.y * qb.x;
             return result;
         }
 

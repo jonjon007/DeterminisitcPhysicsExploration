@@ -7,6 +7,7 @@ using UnityEngine.TestTools;
 using SepM.Utils;
 using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
+using SepM.Math;
 
 public class UtilitiesTests
 {
@@ -98,17 +99,17 @@ public class UtilitiesTests
 
     [Test]
     public void TestMultiplyQQ(){
-        quaternion q1 = new quaternion(1,2,3,1);
-        quaternion q2 = new quaternion(3,2,1,1);
-        quaternion expected = new quaternion(0,12,0,-9);
+        fpq q1 = new fpq(1,2,3,1);
+        fpq q2 = new fpq(3,2,1,1);
+        fpq expected = new fpq(0,12,0,-9);
 
-        quaternion actual = q1.multiply(q2);
+        fpq actual = q1.multiply(q2);
         Assert.AreEqual(expected, actual);
     }
     [Test]
     public void TestMultiplyVQ(){
         fp error = .01m;
-        quaternion q = new quaternion(0.382683f,0,0,0.92388f);
+        fpq q = new fpq(0.382683m,0,0,0.92388m);
         fp3 v = new fp3(0,0,1);
         fp3 expected = new fp3(0, -0.7071063400800001m, 0.7071079759110002m);
 
