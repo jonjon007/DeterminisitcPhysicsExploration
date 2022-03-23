@@ -173,12 +173,8 @@ namespace SepM.Physics{
             SphereCollider sphere,
             PhysTransform sphereTransform)
         {
-            // TODO: Make a capsule version
-            // return algo.FindSphereCapsuleCollisionPoints(
-            //     sphere, transform, this, sphereTransform);
-
-            // TODO
-            return new CollisionPoints();
+            return algo.FindSphereCapsuleCollisionPoints(
+                sphere, transform, this, sphereTransform);
         }
     
         public override CollisionPoints TestCollision(
