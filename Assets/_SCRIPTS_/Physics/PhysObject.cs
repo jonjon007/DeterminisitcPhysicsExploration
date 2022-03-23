@@ -26,7 +26,21 @@ namespace SepM.Physics{
         public fpq Rotation;
         private PhysTransform m_parent;
         private List<PhysTransform> m_children;
-        private PhysTransform t_parent;
+        // private PhysTransform t_parent;
+        public PhysTransform(){
+            Position = fp3.zero;
+            Scale = new fp3(1,1,1);
+            Rotation = fpq.identity;
+            m_parent = null;
+            m_children = new List<PhysTransform>();
+        }
+        public PhysTransform(fp3 p){
+            Position = p;
+            Scale = new fp3(1,1,1);
+            Rotation = fpq.identity;
+            m_parent = null;
+            m_children = new List<PhysTransform>();
+        }
         /* TODO: Comment */
         public fp3 WorldPosition(){
             fp3 parentPos = fp3.zero;

@@ -62,6 +62,9 @@ namespace SepM.Utils{
         public static fp3 normalized(this fp3 vec){
             fp lengthSqrd = vec.lengthSqrd();
 
+            if(lengthSqrd == 0)
+                return fp3.zero;
+
             fp3 result = vec/lengthSqrd.sqrt();
 
             return result;

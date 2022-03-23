@@ -208,6 +208,15 @@ public class UtilitiesTests
     }
 
     [Test]
+    public void TestNormalizedZero(){
+        fp3 vec1 = new fp3(0,0,0);
+        fp3 expected = new fp3(0, 0, 0);
+
+        fp3 actual = vec1.normalized();
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
     public void TestNormalize(){
         fp error = .01m;
         fp3 vec = new fp3(1,-2,3);
