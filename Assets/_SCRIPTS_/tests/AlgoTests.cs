@@ -148,4 +148,52 @@ public class AlgoTests
         CollisionPoints cp = a.TestCollision(ta, b, tb);
         Assert.AreEqual(expected, cp.HasCollision);
     }
+
+    [Test]
+    public void CapsuleCapsuleCollision_SamePos(){
+        CapsuleCollider a = new CapsuleCollider(fp3.zero, 2, 5);
+        CapsuleCollider b = new CapsuleCollider(fp3.zero, 1, 2);
+        PhysTransform ta = new PhysTransform(new fp3(0,0,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = true;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
+    public void CapsuleCapsuleCollision_Overlap(){
+        CapsuleCollider a = new CapsuleCollider(fp3.zero, 2, 5);
+        CapsuleCollider b = new CapsuleCollider(fp3.zero, 1, 2);
+        PhysTransform ta = new PhysTransform(new fp3(1,1.5m,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = true;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
+    public void CapsuleCapsuleCollision_Edge(){
+        CapsuleCollider a = new CapsuleCollider(fp3.zero, 2, 6);
+        CapsuleCollider b = new CapsuleCollider(fp3.zero, 1, 2);
+        PhysTransform ta = new PhysTransform(new fp3(0,4,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = true;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
+    public void CapsuleCapsuleCollision_NotTouching(){
+        CapsuleCollider a = new CapsuleCollider(fp3.zero, 2, 5);
+        CapsuleCollider b = new CapsuleCollider(fp3.zero, 1, 2);
+        PhysTransform ta = new PhysTransform(new fp3(0,4,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = false;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
 }

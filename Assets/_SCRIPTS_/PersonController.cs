@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics.FixedPoint;
 using SepM.Physics;
@@ -24,19 +22,28 @@ public class PersonController : MonoBehaviour
         newObj.IsDynamic = true;
         newObj.Gravity = fp3.zero;
         newObj.IsKinematic = false;
-        newObj.coll = new SepM.Physics.SphereCollider(5);
+        // newObj.coll = new SepM.Physics.SphereCollider(5);
+        newObj.coll = new SepM.Physics.CapsuleCollider(fp3.zero, 5, 6);
         physWorld.AddObject(newObj);
 
-        PhysObject newObj2 = new PhysObject(new fp3(0,10,10));
+        // PhysObject newObj2 = new PhysObject(new fp3(0,10,10));
+        // newObj2.IsDynamic = true;
+        // newObj2.IsKinematic = true;
+        // newObj2.coll = new SepM.Physics.SphereCollider(2);
+        // physWorld.AddObject(newObj2);
+
+        PhysObject newObj2 = new PhysObject(new fp3(0,30,10));
         newObj2.IsDynamic = true;
         newObj2.IsKinematic = true;
-        newObj2.coll = new SepM.Physics.SphereCollider(2);
+        newObj2.coll = new SepM.Physics.CapsuleCollider(fp3.zero, 2, 3);
         physWorld.AddObject(newObj2);
 
-        // PhysObject newObj3 = new PhysObject(new fp3(0,-3,0));
-        // newObj3.Gravity = fp3.zero;
-        // newObj3.coll = new PlaneCollider(new fp3(0,1,0), 2);
-        // physWorld.AddObject(newObj3);
+        PhysObject newObj3 = new PhysObject(new fp3(0,-3,0));
+        newObj3.IsDynamic = true;
+        newObj3.IsKinematic = false;
+        newObj3.Gravity = fp3.zero;
+        newObj3.coll = new PlaneCollider(new fp3(1,1,0), 2);
+        physWorld.AddObject(newObj3);
 
         CollisionPoints collData = newObj2.coll.TestCollision(newObj2.Transform, newObj.coll, newObj.Transform);
         bool isTouching = collData.HasCollision;

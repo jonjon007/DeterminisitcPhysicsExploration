@@ -73,8 +73,8 @@ namespace SepM.Physics{
         }
 
         public static CollisionPoints FindSphereCapsuleCollisionPoints(
-        SphereCollider  a, PhysTransform ta,
-        CapsuleCollider b, PhysTransform tb)
+            SphereCollider  a, PhysTransform ta,
+            CapsuleCollider b, PhysTransform tb)
         {
             fp Bhs = 1.0m;
             fp Brs = 1.0m;
@@ -131,6 +131,64 @@ namespace SepM.Physics{
                 DepthSqrd = AtoD.lengthSqrd(),
                 HasCollision = true
             };
+        }
+
+        public static CollisionPoints FindCapsuleCapsuleCollisionPoints(
+            CapsuleCollider a, PhysTransform ta,
+            CapsuleCollider b, PhysTransform tb)
+        {
+            CapsuleStats aStats = a.GetStats(ta);
+            CapsuleStats bStats = b.GetStats(tb);
+
+            // vectors between line endpoints:
+            fp3 v0 = bStats.A - aStats.A; 
+            fp3 v1 = bStats.B - aStats.A; 
+            fp3 v2 = bStats.A - aStats.B; 
+            fp3 v3 = bStats.B - aStats.B;
+
+            // squared distances:
+            fp d0 = v0.dot(v0); 
+            fp d1 = v1.dot(v1); 
+            fp d2 = v2.dot(v2); 
+            fp d3 = v3.dot(v3);
+
+            // select best potential endpoint on capsule A:
+            fp3 bestA;
+            if (d2 < d0 || d2 < d1 || d3 < d0 || d3 < d1){
+                bestA = aStats.B;
+            }
+            else{
+                bestA = aStats.A;
+            }
+            
+            // select point on capsule B line segment nearest to best potential endpoint on A capsule:
+            fp3 bestB = Utilities.closestPointOnLineSegment(bStats.A, bStats.B, bestA);
+            
+            // now do the same for capsule A segment:
+            bestA = Utilities.closestPointOnLineSegment(aStats.A, aStats.B, bestB);
+
+            bool intersects = false;
+            fp3 penetration_normal = bestA - bestB;
+            fp len = 0;
+
+            if(!penetration_normal.Equals(fp3.zero)){
+                len = penetration_normal.lengthSqrd().sqrt();
+                penetration_normal /= len;  // normalize
+            }
+            fp penetration_depth = a.Radius + b.Radius - len;
+            intersects = penetration_depth >= 0;
+
+            if(intersects){
+                return new CollisionPoints(){
+                    A = bestA,
+                    B = bestB,
+                    Normal = penetration_normal,
+                    DepthSqrd = penetration_depth.sqrd(),
+                    HasCollision = true
+                };
+            }
+
+            return CollisionPoints.noCollision;
         }
     }
 }

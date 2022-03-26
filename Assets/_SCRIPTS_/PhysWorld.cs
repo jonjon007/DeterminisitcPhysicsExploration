@@ -15,6 +15,12 @@ public class PhysWorld{
             float sphRadius = (float)((SepM.Physics.SphereCollider)obj.coll).Radius*2;
             u_obj.transform.localScale = Vector3.one*sphRadius;
         }
+        else if(obj.coll is SepM.Physics.CapsuleCollider){
+            u_obj = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            float capRadius = (float)((SepM.Physics.CapsuleCollider)obj.coll).Radius*2;
+            float capHeight = (float)((SepM.Physics.CapsuleCollider)obj.coll).Height;
+            u_obj.transform.localScale = new Vector3(capRadius, capHeight, capRadius);
+        }
         else{
             u_obj = GameObject.CreatePrimitive(PrimitiveType.Plane);
             PlaneCollider c = (PlaneCollider)obj.coll;

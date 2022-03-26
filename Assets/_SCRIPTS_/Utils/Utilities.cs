@@ -13,6 +13,18 @@ namespace SepM.Utils{
 
             return x;
         }
+
+        public static fp3 closestPointOnLineSegment(fp3 A, fp3 B, fp3 Point){
+            fp3 AB = B - A;
+
+            // TODO: Write test for this case
+            // If point A is the same as point B, just return A
+            if(AB.Equals(fp3.zero))
+                return A;
+
+            fp t = (Point - A).dot(AB) / AB.dot(AB);
+            return A + clamp(t, 0, 1) * AB;
+        }
         
         public static fp3 cross(this fp3 va, fp3 vb){
             return new fp3(
@@ -41,7 +53,7 @@ namespace SepM.Utils{
         public static fp lengthSqrd(this fp3 vec){
             return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
         }
-
+        
         public static fp major(this fp2 vec){
             fp major = vec.x;
             if (System.Math.Abs(vec.y) > System.Math.Abs(major)) major = vec.y;
@@ -56,7 +68,7 @@ namespace SepM.Utils{
 
             return major;
         }
-
+        
         public static fp max(fp a, fp b){
             return a > b ? a : b;
         }

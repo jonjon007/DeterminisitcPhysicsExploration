@@ -157,14 +157,32 @@ namespace SepM.Physics{
 			Center = fp3.zero;
 			Radius = 0.5m;
 			Height = 2;
-            Direction = new fp3(1,0,0);
+            Direction = new fp3(0,1,0);
         }
     
         public CapsuleCollider(fp3 c, fp r, fp h){
             Center = c;
             Radius = r;
             Height = h;
-            Direction = new fp3(1,0,0);
+            Direction = new fp3(0,1,0);
+        }
+
+        public CapsuleStats GetStats(PhysTransform transform){
+            fp3 tip = transform.Position + Center + Direction *(Height/2m);
+            fp3 bse = transform.Position + Center - Direction *(Height/2m);
+            fp3 a_Normal = Direction.normalized(); 
+            fp3 a_LineEndOffset = a_Normal * Radius; 
+            fp3 A = bse + a_LineEndOffset; 
+            fp3 B = tip - a_LineEndOffset;
+
+            CapsuleStats result = new CapsuleStats{
+                a_Normal = a_Normal,
+                a_LineEndOffset = a_LineEndOffset,
+                A = A,
+                B = B
+            };
+
+            return result;
         }
 
         public override CollisionPoints TestCollision(
@@ -201,15 +219,18 @@ namespace SepM.Physics{
             PhysTransform transform,
             CapsuleCollider capsule,
             PhysTransform capsuleTransform){
-            // TODO: Make a capsule version
-            // return algo.FindCapsuleCapsuleCollisionPoints(
-            //     this, transform, capsule, capsuleTransform
-            // );
-
-            // TODO
-            return new CollisionPoints();
+            return algo.FindCapsuleCapsuleCollisionPoints(
+                this, transform, capsule, capsuleTransform
+            );
         }
     };
+
+    public struct CapsuleStats{
+        public fp3 a_Normal;
+        public fp3 a_LineEndOffset;
+        public fp3 A;
+        public fp3 B;
+    }
 
     public class PlaneCollider : Collider{
         public fp3 Normal;
@@ -266,14 +287,14 @@ namespace SepM.Physics{
     public class PhysObject {
         public PhysTransform Transform; // struct with 3 floats for x, y, z or i + j + k
         public fp3 Velocity;
-        public fp3 Gravity;
-        public fp3 Force;
+        public fp3 Gravity; // Gravitational acceleration
+        public fp3 Force; // Net force
         // Why use inverse mass? http://obi.virtualmethodstudio.com/forum/thread-2130.html
         public fp InverseMass;
         public bool IsKinematic;
-        public fp Restitution = 0.5m;
-        public fp DynamicFriction = 0.5m;
-        public fp StaticFriction = 0.5m;
+        public fp Restitution = 0.5m; // Elasticity of collisions (bounciness)
+        public fp DynamicFriction = 0.5m; // Dynamic friction coefficient
+        public fp StaticFriction = 0.5m; // Static friction coefficient
         public Collider coll = null;
         public bool IsDynamic = false;
         public PhysObject(int m){

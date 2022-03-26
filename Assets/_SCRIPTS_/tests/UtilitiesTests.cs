@@ -92,7 +92,16 @@ public class UtilitiesTests
 
 
     [Test]
-    public void TestLengthSqrd(){
+    public void Test2DLengthSqrd(){
+        fp2 vec1 = new fp2(1,-2);
+        fp expected = 5;
+
+        fp actual = vec1.lengthSqrd();
+        Assert.AreEqual(expected, actual);
+    }
+    
+    [Test]
+    public void Test3DLengthSqrd(){
         fp3 vec1 = new fp3(1,-2,3);
         fp expected = 14;
 
@@ -158,6 +167,16 @@ public class UtilitiesTests
 
         fp actual = zeroMajor.major();
         Assert.AreEqual(expected, actual, "Incorrect major calculation");
+    }
+
+    [Test]
+    public void TestMax(){
+        fp small = -1;
+        fp large = 1.1m;
+        fp expected = 1.1m;
+
+        fp actual = Utilities.max(small, large);
+        Assert.AreEqual(expected, actual);
     }
 
     [Test]
