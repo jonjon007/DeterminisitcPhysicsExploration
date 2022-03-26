@@ -1,10 +1,17 @@
 using System.Collections.Generic;
-using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
 using SepM.Utils;
 using SepM.Math;
 
 namespace SepM.Physics{
+    public static class Constants{
+        public static fp3 GRAVITY = new fp3(0,-9.81m, 0);
+    }
+    public struct PhysCollision{
+        public PhysObject ObjA;
+        public PhysObject ObjB;
+        public CollisionPoints Points;
+    }
     public struct CollisionPoints {
         public fp3 A; // Furthest point of A into B
         public fp3 B; // Furthest point of B into A
@@ -259,29 +266,59 @@ namespace SepM.Physics{
     public class PhysObject {
         public PhysTransform Transform; // struct with 3 floats for x, y, z or i + j + k
         public fp3 Velocity;
+        public fp3 Gravity;
         public fp3 Force;
-        public fp Mass;
-        public Collider coll;
+        // Why use inverse mass? http://obi.virtualmethodstudio.com/forum/thread-2130.html
+        public fp InverseMass;
+        public bool IsKinematic;
+        public fp Restitution = 0.5m;
+        public fp DynamicFriction = 0.5m;
+        public fp StaticFriction = 0.5m;
+        public Collider coll = null;
+        public bool IsDynamic = false;
         public PhysObject(int m){
             Transform = new PhysTransform();
             Velocity = new fp3();
             Force = new fp3();
-            Mass = m;
+            InverseMass = 1m/m;
+            Gravity = SepM.Physics.Constants.GRAVITY;
         }
         public PhysObject(fp3 pos){
             PhysTransform newTransform = new PhysTransform();
             newTransform.Position = pos;
+            
             Transform = newTransform;
-
             Velocity = new fp3();
             Force = new fp3();
-            Mass = 5;
+            InverseMass = 1m/5m;
+            Gravity = SepM.Physics.Constants.GRAVITY;
         }
         public PhysObject(PhysTransform t, fp3 v, fp3 f, fp m){
             Transform = t;
             Velocity = v;
             Force = f;
-            Mass = m;
+            InverseMass = 1m/m;
+            Gravity = SepM.Physics.Constants.GRAVITY;
+        }
+
+        public fp GetMass(){
+            return 1m/InverseMass;
+        }
+
+        public override string ToString(){
+            string collType = "";
+            if(!(coll is null)){
+                if(coll is SphereCollider)
+                    collType = string.Format("Sphere({0})", ((SphereCollider)coll).Radius);
+                else if(coll is PlaneCollider)
+                    collType = "Plane";
+                if(coll is CapsuleCollider)
+                    collType = "Capsule";
+            }
+            string result = collType + "PhysObject";
+
+            return result;
+
         }
     };
 }

@@ -32,7 +32,12 @@ namespace SepM.Utils{
             return other >= minVal && other <= maxVal;
         }
         
-        /* Returns the vector length squared, avoiding the slow operation */
+        /* Returns the 2D vector length squared, avoiding the slow operation */
+        public static fp lengthSqrd(this fp2 vec){
+            return vec.x * vec.x + vec.y * vec.y;
+        }
+        
+        /* Returns the 3D vector length squared, avoiding the slow operation */
         public static fp lengthSqrd(this fp3 vec){
             return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
         }
@@ -50,6 +55,10 @@ namespace SepM.Utils{
             if (System.Math.Abs(vec.z) > System.Math.Abs(major)) major = vec.z;
 
             return major;
+        }
+
+        public static fp max(fp a, fp b){
+            return a > b ? a : b;
         }
         
         /* Returns the vector length squared, avoiding the slow operation */
