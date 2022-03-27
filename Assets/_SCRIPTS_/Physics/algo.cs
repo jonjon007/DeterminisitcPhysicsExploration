@@ -190,6 +190,85 @@ namespace SepM.Physics{
 
             return CollisionPoints.noCollision;
         }
+
+        public static CollisionPoints FindSphereAABBCollisionPoints(
+            SphereCollider a, PhysTransform ta,
+            AABBoxCollider b, PhysTransform tb)
+        {
+            fp dist;
+            fp3 normal;
+
+            fp3 A = a.Center + ta.WorldPosition();
+
+            // Find point (p) on AABB closest to Sphere center
+            fp3 p = b.closestPointAABB(A);
+
+            // Sphere and AABB intersect if the (squared) distance from sphere center to point (p)
+            // is less than the (squared) sphere radius
+            fp3 v = p - A;
+
+            if (v.dot(v) <= a.Radius * a.Radius)
+            {
+                dist = b.SqDistPointAABB(A);
+
+                // Calculate normal using sphere center a closest point on AABB
+                normal = A - p;
+
+                if (!normal.Equals(fp3.zero)){
+                    normal.normalize();
+                }
+                else
+                {
+                    // Sphere is inside AABB
+                    normal = new fp3(0,1,0);
+                }
+
+                fp3 B = v;
+                fp3 AtoB = B - A;
+
+                fp Ar = a.Radius * ta.WorldScale().major();
+
+                return new CollisionPoints(){
+                    A = a.Center + ta.WorldPosition(),
+                    B = B,
+                    Normal = normal,
+                    DepthSqrd = AtoB.lengthSqrd(),
+                    HasCollision = true
+                };
+            }
+
+            // No intersection
+            return CollisionPoints.noCollision;
+        }
+
+        public static fp3 closestPointAABB(this AABBoxCollider box, fp3 point) // P131
+        {
+            // For each coordinate axis, if the point coordinate value is outside box,
+            // clamp it to the box, else keep it as is
+            fp3 min = box.MinValue;
+            fp3 max = box.MaxValue;
+            fp3 q = fp3.zero;
+            fp v = 0;
+            v = point.x;
+            v = System.Math.Max(v, min.x);
+            v = System.Math.Min(v, max.x);
+            q.x = v;
+            v = point.y;
+            v = System.Math.Max(v, min.y);
+            v = System.Math.Min(v, max.y);
+            q.y = v;
+            v = point.z;
+            v = System.Math.Max(v, min.z);
+            v = System.Math.Min(v, max.z);
+            q.z = v;
+            
+            return q;
+        }
+
+        public static fp SqDistPointAABB(this AABBoxCollider box, fp3 point){
+            fp result = (box.closestPointAABB(point) - point).lengthSqrd();
+            return result;
+        }
     }
 }
 /*

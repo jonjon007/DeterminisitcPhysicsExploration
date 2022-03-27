@@ -101,6 +101,12 @@ namespace SepM.Physics{
             CapsuleCollider capsule,
             PhysTransform capsuleTransform
         );
+
+        public abstract CollisionPoints TestCollision(
+            PhysTransform transform,
+            AABBoxCollider capsule,
+            PhysTransform capsuleTransform
+        );
     };
 
     public class SphereCollider : Collider{
@@ -143,6 +149,16 @@ namespace SepM.Physics{
             PhysTransform capsuleTransform){
             return algo.FindSphereCapsuleCollisionPoints(
                 this, transform, capsule, capsuleTransform
+            );
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            AABBoxCollider box,
+            PhysTransform planeTransform){
+            // TODO: Make a aabbox version
+            return algo.FindSphereAABBCollisionPoints(
+                this, transform, box, planeTransform
             );
         }
     };
@@ -223,6 +239,86 @@ namespace SepM.Physics{
                 this, transform, capsule, capsuleTransform
             );
         }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            AABBoxCollider plane,
+            PhysTransform planeTransform){
+            // TODO: Make a aabbox version
+            // return algo.FindCapsuleAABBCollisionPoints(
+            //     this, transform, plane, planeTransform
+            // );
+
+            // TODO: Remove
+            return new CollisionPoints();
+        }
+    };
+
+    // Axis-Aligned Bounding Box
+    public class AABBoxCollider : Collider{
+        public fp3 MinValue;
+        public fp3 MaxValue;
+    
+        public AABBoxCollider(fp3 minVal, fp3 maxVal){
+            MinValue = minVal;
+            MaxValue = maxVal;
+        }
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            Collider collider,
+            PhysTransform colliderTransform)
+        {
+            return collider.TestCollision(colliderTransform, this, transform);
+        }
+    
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            SphereCollider sphere,
+            PhysTransform sphereTransform)
+        {
+            return algo.FindSphereAABBCollisionPoints(
+                sphere, transform, this, sphereTransform
+            );
+        }
+    
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            PlaneCollider plane,
+            PhysTransform planeTransform){
+            // TODO: Make a aabbox version
+            // return algo.FindPlaneAABBCollisionPoints(
+            //     this, transform, plane, planeTransform
+            // );
+
+            // TODO: Remove
+            return new CollisionPoints();
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            CapsuleCollider capsule,
+            PhysTransform capsuleTransform){
+            // TODO: Make a aabbox version
+            // return algo.FindCapsuleAABBCollisionPoints(
+            //     this, transform, capsule, planeTransform
+            // );
+
+            // TODO: Remove
+            return new CollisionPoints();
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            AABBoxCollider plane,
+            PhysTransform planeTransform){
+            // TODO: Make a aabbox version
+            // return algo.FindSphereAABBCollisionPoints(
+            //     this, transform, plane, planeTransform
+            // );
+
+            // TODO: Remove
+            return new CollisionPoints();
+        }
     };
 
     public struct CapsuleStats{
@@ -279,6 +375,19 @@ namespace SepM.Physics{
             // );
 
             // TODO
+            return new CollisionPoints();
+        }
+
+        public override CollisionPoints TestCollision(
+            PhysTransform transform,
+            AABBoxCollider plane,
+            PhysTransform planeTransform){
+            // TODO: Make a aabbox version
+            // return algo.FindPlaneAABBCollisionPoints(
+            //     this, transform, plane, planeTransform
+            // );
+
+            // TODO: Remove
             return new CollisionPoints();
         }
     };

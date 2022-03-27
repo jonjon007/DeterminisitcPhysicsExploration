@@ -25,7 +25,7 @@ namespace SepM.Utils{
             fp t = (Point - A).dot(AB) / AB.dot(AB);
             return A + clamp(t, 0, 1) * AB;
         }
-        
+
         public static fp3 cross(this fp3 va, fp3 vb){
             return new fp3(
                 va.y * vb.z - va.z * vb.y,

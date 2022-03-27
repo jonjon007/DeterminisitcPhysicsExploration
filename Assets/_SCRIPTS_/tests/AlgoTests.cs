@@ -150,6 +150,54 @@ public class AlgoTests
     }
 
     [Test]
+    public void SphereAABoxCollision_SamePos(){
+        SphereCollider a = new SphereCollider(1);
+        AABBoxCollider b = new AABBoxCollider(new fp3(-1,-1,-1), new fp3(1,1,1));
+        PhysTransform ta = new PhysTransform(new fp3(0,0,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = true;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
+    public void SphereAABoxCollision_Overlap(){
+        SphereCollider a = new SphereCollider(1);
+        AABBoxCollider b = new AABBoxCollider(new fp3(-1,-.5m,-1), new fp3(1,1.5m,1));
+        PhysTransform ta = new PhysTransform(new fp3(0,0,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = true;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
+    public void SphereAABoxCollision_Edge(){
+        SphereCollider a = new SphereCollider(1);
+        AABBoxCollider b = new AABBoxCollider(new fp3(-1,-1,-1), new fp3(1,1,1));
+        PhysTransform ta = new PhysTransform(new fp3(0,0,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,2,0));
+        bool expected = true;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
+    public void SphereAABoxCollision_NotTouching(){
+        SphereCollider a = new SphereCollider(1);
+        AABBoxCollider b = new AABBoxCollider(new fp3(-1,-1,-1), new fp3(1,1,1));
+        PhysTransform ta = new PhysTransform(new fp3(3,0,0));
+        PhysTransform tb = new PhysTransform(new fp3(0,0,0));
+        bool expected = false;
+
+        CollisionPoints cp = a.TestCollision(ta, b, tb);
+        Assert.AreEqual(expected, cp.HasCollision);
+    }
+
+    [Test]
     public void CapsuleCapsuleCollision_SamePos(){
         CapsuleCollider a = new CapsuleCollider(fp3.zero, 2, 5);
         CapsuleCollider b = new CapsuleCollider(fp3.zero, 1, 2);
