@@ -113,7 +113,7 @@ namespace SepM.Physics{
         public fp3 Center;
         public fp Radius;
     
-        public SphereCollider(int r){
+        public SphereCollider(fp r){
             Center = fp3.zero;
             Radius = r;
         }
@@ -156,7 +156,6 @@ namespace SepM.Physics{
             PhysTransform transform,
             AABBoxCollider box,
             PhysTransform planeTransform){
-            // TODO: Make a aabbox version
             return algo.FindSphereAABBCollisionPoints(
                 this, transform, box, planeTransform
             );
@@ -176,6 +175,13 @@ namespace SepM.Physics{
             Direction = new fp3(0,1,0);
         }
     
+        public CapsuleCollider(fp r, fp h){
+            Center = fp3.zero;
+            Radius = r;
+            Height = h;
+            Direction = new fp3(0,1,0);
+        }
+        
         public CapsuleCollider(fp3 c, fp r, fp h){
             Center = c;
             Radius = r;
@@ -263,6 +269,13 @@ namespace SepM.Physics{
             MinValue = minVal;
             MaxValue = maxVal;
         }
+
+        // TODO: Consider getting rid of the minval max val constructor?
+        public AABBoxCollider(fp3 center, fp3 scale, bool isCenter){
+            MinValue = center - scale/2;
+            MaxValue = center + scale/2;
+        }
+
         public override CollisionPoints TestCollision(
             PhysTransform transform,
             Collider collider,
@@ -404,8 +417,17 @@ namespace SepM.Physics{
         public fp Restitution = 0.5m; // Elasticity of collisions (bounciness)
         public fp DynamicFriction = 0.5m; // Dynamic friction coefficient
         public fp StaticFriction = 0.5m; // Static friction coefficient
-        public Collider coll = null;
+        public Collider Coll = null;
         public bool IsDynamic = false;
+        
+        public PhysObject(){
+            Transform = new PhysTransform();
+            Velocity = new fp3();
+            Force = new fp3();
+            InverseMass = 1m/5m;
+            Gravity = SepM.Physics.Constants.GRAVITY;
+        }
+
         public PhysObject(int m){
             Transform = new PhysTransform();
             Velocity = new fp3();
@@ -437,13 +459,15 @@ namespace SepM.Physics{
 
         public override string ToString(){
             string collType = "";
-            if(!(coll is null)){
-                if(coll is SphereCollider)
-                    collType = string.Format("Sphere({0})", ((SphereCollider)coll).Radius);
-                else if(coll is PlaneCollider)
+            if(!(Coll is null)){
+                if(Coll is SphereCollider)
+                    collType = string.Format("Sphere({0})", ((SphereCollider)Coll).Radius);
+                else if(Coll is PlaneCollider)
                     collType = "Plane";
-                if(coll is CapsuleCollider)
+                else if(Coll is CapsuleCollider)
                     collType = "Capsule";
+                else if(Coll is AABBoxCollider)
+                    collType = "AABBox";
             }
             string result = collType + "PhysObject";
 

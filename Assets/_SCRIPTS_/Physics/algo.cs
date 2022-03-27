@@ -196,7 +196,6 @@ namespace SepM.Physics{
             AABBoxCollider b, PhysTransform tb)
         {
             fp dist;
-            fp3 normal;
 
             fp3 A = a.Center + ta.WorldPosition();
 
@@ -212,26 +211,22 @@ namespace SepM.Physics{
                 dist = b.SqDistPointAABB(A);
 
                 // Calculate normal using sphere center a closest point on AABB
-                normal = A - p;
+                fp3 normal = (p - A).normalized();
 
-                if (!normal.Equals(fp3.zero)){
-                    normal.normalize();
-                }
-                else
-                {
-                    // Sphere is inside AABB
-                    normal = new fp3(0,1,0);
-                }
-
-                fp3 B = v;
+                fp3 B = p - normal*a.Radius;
                 fp3 AtoB = B - A;
 
-                fp Ar = a.Radius * ta.WorldScale().major();
+                if (AtoB.Equals(fp3.zero)){
+                    // Sphere is inside AABB
+                    AtoB = new fp3(0,1,0);
+                }
+
+                fp dsqrd = AtoB.lengthSqrd();
 
                 return new CollisionPoints(){
                     A = a.Center + ta.WorldPosition(),
                     B = B,
-                    Normal = normal,
+                    Normal = AtoB.normalized(),
                     DepthSqrd = AtoB.lengthSqrd(),
                     HasCollision = true
                 };
