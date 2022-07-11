@@ -37,3 +37,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Logs
+Logs/
+
+# Code Coverage
+CodeCoverage/
